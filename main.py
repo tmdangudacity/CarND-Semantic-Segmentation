@@ -189,6 +189,10 @@ def run():
     # You'll need a GPU with at least 10 teraFLOPS to train on.
     #  https://www.cityscapes-dataset.com/
 
+    # Hyperparameters
+    EPOCHS     = 24
+    BATCH_SIZE = 5
+
     with tf.Session() as sess:
         # Path to vgg model
         vgg_path = os.path.join(data_dir, 'vgg')
@@ -199,10 +203,8 @@ def run():
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
 
         # TODO: Build NN using load_vgg, layers, and optimize function
-
-        # Placeholders
-        correct_label = tf.placeholder(tf.int32, [None, None, None, num_classes]) #, name='correct_label')
-        learning_rate = tf.placeholder(tf.float32) #, name='learning_rate')
+        correct_label = tf.placeholder(tf.int32, [None, None, None, num_classes])
+        learning_rate = tf.placeholder(tf.float32)
 
         print("Loading VGG")
         input_image, keep_prob, vgg_layer3, vgg_layer4, vgg_layer7 = load_vgg(sess, vgg_path)
@@ -214,11 +216,6 @@ def run():
         logits, train_op, cross_entropy_loss = optimize(output_layer, correct_label, learning_rate, num_classes)
 
         # TODO: Train NN using the train_nn function
-        EPOCHS     = 12
-        BATCH_SIZE = 5
-
-        #saver = tf.train.Saver()
-
         print("Training NN")
         train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, train_op, cross_entropy_loss, input_image, correct_label, keep_prob, learning_rate)
 
