@@ -5,6 +5,7 @@ import helper
 import warnings
 from distutils.version import LooseVersion
 import project_tests as tests
+import numpy as np
 
 
 # Check TensorFlow Version
@@ -139,34 +140,27 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     :param keep_prob: TF Placeholder for dropout keep probability
     :param learning_rate: TF Placeholder for learning rate
     """
-    # TODO: Implement function
     keep_prob_value = 0.5
-    learning_rate_value = 0.001
+    learning_rate_value = 0.00085
 
     sess.run(tf.global_variables_initializer())
 
-    print("Number of Epochs: {}".format(epochs))
+    print("Start training, Epochs: ", epochs, ", Batch size: ", batch_size, ", Keep prob: ", keep_prob_value, ", Learning rate: ", learning_rate_value)
 
     for epoch in range(epochs):
-        print(" - Training Epoch {}".format(epoch + 1))
-        n_batches  = 0
-        epoch_loss = 0
-        batch_loss = 0
+        batch_loss = []
         for image, label in get_batches_fn(batch_size):
-            n_batches += 1
-            print("  - Batch {}".format(n_batches))
-            _ , batch_loss = sess.run([train_op, cross_entropy_loss],
-                                       feed_dict={ input_image: image,
-                                                   correct_label: label,
-                                                   keep_prob: keep_prob_value,
-                                                   learning_rate: learning_rate_value
-                                                 }
-                                     )
+            _ , loss = sess.run([train_op, cross_entropy_loss],
+                                 feed_dict={ input_image: image,
+                                             correct_label: label,
+                                             keep_prob: keep_prob_value,
+                                             learning_rate: learning_rate_value
+                                           }
+                               )
 
-            print("  - Batch loss {:.5f}".format(batch_loss))
-            epoch_loss += batch_loss
+            batch_loss.append(loss)
 
-        print(" - Average Epoch loss {:.5f}".format(epoch_loss / n_batches))
+        print("Epoch, ", (epoch + 1), ", Mean loss, ", np.mean(batch_loss), ", Min loss, ", np.amin(batch_loss), ", Max loss, ", np.amax(batch_loss), ", Stdev, ", np.std(batch_loss))
 
     print('Training completed')
 
@@ -202,24 +196,25 @@ def run():
         # OPTIONAL: Augment Images for better results
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
 
-        # TODO: Build NN using load_vgg, layers, and optimize function
+        # Building NN using load_vgg, layers, and optimize function
         correct_label = tf.placeholder(tf.int32, [None, None, None, num_classes])
         learning_rate = tf.placeholder(tf.float32)
 
-        print("Loading VGG")
+        #print("Loading VGG")
         input_image, keep_prob, vgg_layer3, vgg_layer4, vgg_layer7 = load_vgg(sess, vgg_path)
 
-        print("Building decoder layers")
+        #print("Building Decoder layers")
         output_layer = layers(vgg_layer3, vgg_layer4, vgg_layer7, num_classes)
 
-        print("Preparing Logits, Training Operation and Loss function")
+        #print("Preparing Logits, Training Operation and Loss function")
         logits, train_op, cross_entropy_loss = optimize(output_layer, correct_label, learning_rate, num_classes)
 
-        # TODO: Train NN using the train_nn function
-        print("Training NN")
+        # Training NN using the train_nn function
+        #print("Training NN")
         train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, train_op, cross_entropy_loss, input_image, correct_label, keep_prob, learning_rate)
 
-        # TODO: Save inference data using helper.save_inference_samples
+        # Save inference data using helper.save_inference_samples
+        #print("Saving Inference samples")
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
 
         # OPTIONAL: Apply the trained model to a video
