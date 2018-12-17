@@ -28,6 +28,18 @@ Dataset is available for download at [Kitti Road dataset](http://www.cvlibs.net/
 
 The implementation of the code in the [main.py](./main.py) module was based on the lessons, the [Project Q&A](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/595f35e6-b940-400f-afb2-2015319aa640/lessons/1b046c47-76e3-45de-8be7-8bc6b4361b18/concepts/2a478851-eebb-47c9-acc3-c6a92f1f3e61) and information from the article [Fully Convolutional Networks for Semantic Segmentation](https://people.eecs.berkeley.edu/~jonlong/long_shelhamer_fcn.pdf) by Jonathan Long, Evan Shelhamer and Trevor Darrell from UC Berkeley.
 
+The main function is the function layers in [main.py](./main.py) (from line 52 to line 98).
+
+The function builds a decoder for the FCN starting from the VGG's layers 7.
+
+It first creates a 1x1 convolutional layer from the VGG layers 7 (line 62).
+
+It then up-scales (transposes) the subsequent convolutional layers by 2, 2 and 8 to get the original dimension of the input image (lines 67, 79 and 91).
+
+In between upscaling the decoder uses VGG's layers 4 and 3 to create skip connections (lines 72 to 76 and lines 84 to 88)
+
+The optimize function (line 101 to 126) uses Adam optimizer for training and minimizing of loss function.
+
 
 ## Run
 Run the following command to run the project:
