@@ -6,6 +6,7 @@ import warnings
 from distutils.version import LooseVersion
 import project_tests as tests
 import numpy as np
+import time
 
 
 # Check TensorFlow Version
@@ -147,7 +148,10 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 
     print("Start training, Epochs: ", epochs, ", Batch size: ", batch_size, ", Keep prob: ", keep_prob_value, ", Learning rate: ", learning_rate_value)
 
+    start_training_time = time.time()
+
     for epoch in range(epochs):
+        start_epoch_time = time.time()
         batch_loss = []
         for image, label in get_batches_fn(batch_size):
             _ , loss = sess.run([train_op, cross_entropy_loss],
@@ -160,9 +164,12 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 
             batch_loss.append(loss)
 
-        print("Epoch, ", (epoch + 1), ", Mean loss, ", np.mean(batch_loss), ", Min loss, ", np.amin(batch_loss), ", Max loss, ", np.amax(batch_loss), ", Stdev, ", np.std(batch_loss))
+        print("Epoch, ", (epoch + 1), ", Run time: ", (time.time() - start_epoch_time),
+              ", Mean loss, ", np.mean(batch_loss), ", Min loss, ", np.amin(batch_loss),
+              ", Max loss, ", np.amax(batch_loss), ", Stdev, ", np.std(batch_loss))
 
-    print('Training completed')
+
+    print("Training completed in ", (time.time() - start_training_time))
 
 print("Testing training function")
 tests.test_train_nn(train_nn)
