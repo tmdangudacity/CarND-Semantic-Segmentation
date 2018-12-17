@@ -51,7 +51,7 @@ python main.py
 
 The tests were run with Udacity GPU workspace.
 
-The best results were obtained by running the FCN with the following hyperparameters:
+The best results were obtained by training the FCN with the following hyperparameters:
 
 Epochs: 48
 
@@ -121,7 +121,7 @@ Epoch,  5 , Run time:  71.84802436828613 , Mean loss,  0.151692 , Min loss,  0.1
 
 ```
 
-It was found that the best results were obtained training the network with the following values of hyperparameters:
+It was found that the best results were obtained by training the network with the following values of hyperparameters:
 ```  
 Start training, Epochs:  48 , Batch size:  10 , Keep prob:  0.5 , Learning rate:  0.00085
 ```
