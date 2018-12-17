@@ -17,8 +17,6 @@ Make sure you have the following is installed:
  - [TensorFlow](https://www.tensorflow.org/)
  - [NumPy](http://www.numpy.org/)
  - [SciPy](https://www.scipy.org/)
-Epoch,  6 , Run time:  72.03599977493286 , Mean loss,  0.146156 , Min loss,  0.111325 , Max loss,  0.18377 , Stdev,  0.0177905
-Epoch,  7 , Run time:  71.80563855171204 , Mean loss,  0.146286 , Min loss,  0.103637 , Max loss,  0.20188 , Stdev,  0.0242049
 
 You may also need [Python Image Library (PIL)](https://pillow.readthedocs.io/) for SciPy's `imresize` function.
 
