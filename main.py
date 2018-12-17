@@ -191,8 +191,8 @@ def run():
     #  https://www.cityscapes-dataset.com/
 
     # Hyperparameters
-    EPOCHS     = 24
-    BATCH_SIZE = 5
+    EPOCHS     = 48
+    BATCH_SIZE = 10
 
     with tf.Session() as sess:
         # Path to vgg model
